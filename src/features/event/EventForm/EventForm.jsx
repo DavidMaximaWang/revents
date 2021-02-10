@@ -7,8 +7,17 @@ class EventForm extends Component {
     date: "",
     city: "",
     venue: "",
-    hostedBy: ""
+    hostedBy: "",
   };
+
+  componentDidMount(){
+      if(this.props.selectedEvent!==null){
+        this.setState({
+          ...this.props.selectedEvent
+        })
+      }
+  }
+
   handleFormSubbmit = evt => {
     //uncontrolled form , legacy, direct submit from the actual DOM
     /* <Form onSubmit={this.handleFormSubbmit}>
@@ -17,7 +26,12 @@ class EventForm extends Component {
                 <input ref="title" placeholder="Event Title" />
               </Form.Field> */
     evt.preventDefault();
-    this.props.createEvent(this.state);
+    if(this.state.id){
+      this.props.updateEvent(this.state);
+    }else{
+      this.props.createEvent(this.state);
+    }
+    
     // console.log(this.state);//ref is available as we are using 'Component'
   };
   handleInputChange = ({ target: { name, value } }) => {
