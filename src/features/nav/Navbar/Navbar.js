@@ -19,10 +19,11 @@ class Navbar extends Component {
       <Menu inverted fixed="top">
         <Container>
           <Menu.Item as={NavLink} exact to="/" header>
-            <img src="assets/logo.png" alt="logo" />
+            <img src="/assets/logo.png" alt="logo" />
+            {/* here use /assets/logo.png instead of assets/logo.png, otherwise logo sometime unresolved */}
             Re-vents
           </Menu.Item>
-          <Menu.Item as={NavLink} to="/events" name="Events" />
+          <Menu.Item as={NavLink} exact to="/events" name="Events" />
           <Menu.Item as={NavLink} to="/people" name="People" />
           <Menu.Item as={NavLink} to="/test" name="Test" />
           <Menu.Item as={NavLink} to="/createEvent">
