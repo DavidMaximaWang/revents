@@ -19,7 +19,6 @@ export const updateEvent = (event) => {
 };
 
 export const deleteEvent = (eventId) => {
-  console.log("eventId, ", eventId)
   return {
     type: DELETE_EVENT,
     payload: {
