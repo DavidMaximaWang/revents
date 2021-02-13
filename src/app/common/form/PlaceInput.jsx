@@ -7,6 +7,7 @@ const PlaceInput = ({
   width,
   options,
   placeholder,
+  onSelect,
   meta: { touched, error }
 }) => {
   return (
@@ -14,6 +15,7 @@ const PlaceInput = ({
       value={value}
       onChange={onChange}
       searchOptions={options}
+      onSelect = {onSelect}
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <Form.Field error={touched && !!error}>
