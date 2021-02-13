@@ -14,6 +14,7 @@ import {
   isRequired,
   hasLengthGreaterThan
 } from "revalidate";
+import PlaceInput from "../../../app/common/form/PlaceInput";
 
 
 const mapState = (state, ownProps) => {
@@ -105,7 +106,7 @@ class EventForm extends Component {
               <Header sub color="teal" content="Event Location Details" />
               <Field
                 name="city"
-                component={TextInput}
+                component={PlaceInput}
                 placeholder=" Event city"
               />
               <Field
