@@ -12,13 +12,17 @@ class TestPlaceInput extends React.Component {
   }
 
   handleChange = address => {
+    console.log(this.props.hh)
     this.setState({ address });
   };
 
   handleSelect = address => {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
+      .then(latLng => {
+        console.log('Success', latLng);
+        this.props.handleLtLng(latLng);
+      })
       .catch(error => console.error('Error', error));
   };
 
