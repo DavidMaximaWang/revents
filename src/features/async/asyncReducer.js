@@ -6,27 +6,31 @@ import {
 } from "./asyncContant";
 
 const initialState = {
-  loading: false
+  loading: false,
+  elementName:null
 };
 
-const asyncActionStarted = state => {
+const asyncActionStarted = (state, payload) => {
   return {
     ...state,
-    loading: true
+    loading: true,
+    elementName:payload
   };
 };
 
-const asyncActionFinished = state => {
+const asyncActionFinished = (state) => {
   return {
     ...state,
-    loading: false
+    loading: false,
+    elementName: null
   };
 };
 
-const asyncActionError = state => {
+const asyncActionError = (state) => {
   return {
     ...state,
-    loading: false
+    loading: false,
+    elementName: null
   };
 };
 
