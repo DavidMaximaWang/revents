@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { incrementCounter, decrementCounter } from "./testAction";
+import { incrementAsync, decrementAsync } from "./testAction";
 import { Button } from "semantic-ui-react";
 import TestPlaceInput from "./TestPlaceInput";
 import SimpleMap from "./SimpleMap";
@@ -12,8 +12,8 @@ const mapState = state => ({
 
 const actions = {
   //mapDispatchToProps
-  incrementCounter,
-  decrementCounter,
+  incrementAsync,
+  decrementAsync,
   openModal
 };
 
@@ -30,13 +30,13 @@ class TestComponent extends Component {
     }));
   };
   render() {
-    const { data, incrementCounter, decrementCounter, openModal } = this.props;
+    const { data, incrementAsync, decrementAsync, openModal } = this.props;
     return (
       <div>
         <h1> component test </h1>
         <h3>The answer is: {data}</h3>
-        <Button onClick={incrementCounter} positive content="Increment" />
-        <Button onClick={decrementCounter} negative content="Decrement" />
+        <Button onClick={incrementAsync} positive content="Increment" />
+        <Button onClick={decrementAsync} negative content="Decrement" />
         <Button onClick={()=>openModal('TestModal',{data:42})} color='teal' content="Open Modal" />
         <br />
         <br />
