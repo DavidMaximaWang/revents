@@ -9,8 +9,8 @@ import firebase from "../config/firebase";
 const rrfConfig = {
   userProfile: "users",
   attachAuthIsReady: true, //wait until authentication is ready for users
-  userFireStoreForProfile: true
-}; //react redux firebase config
+  useFirestoreForProfile: true // use firestore instead of firebase for profile
+}; //react redux firebase config, 
 
 export const configureStore = () => {
   const middlewares = [thunk.withExtraArgument({ getFirebase, getFirestore })];
