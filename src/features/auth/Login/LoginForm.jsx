@@ -1,13 +1,14 @@
 import React from "react";
-import { Form, Segment, Button, Label } from "semantic-ui-react";
+import { Form, Segment, Button, Label, Divider } from "semantic-ui-react";
 import { Field, reduxForm } from "redux-form";
 import TextInput from "../../../app/common/form/TextInput";
-import { login } from "../authAction";
+import { login, socialLogin } from "../authAction";
 import { connect } from "react-redux";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
-const actions = {login};
+const actions = {login, socialLogin};
 
-const LoginForm = ({ login, handleSubmit, error }) => {
+const LoginForm = ({ login, handleSubmit, socialLogin, error }) => {
   return (
     <Form  size="large" onSubmit={handleSubmit(login)}>
       {/* must pass onSubbmit function to the handleSubmit(),
@@ -30,6 +31,10 @@ const LoginForm = ({ login, handleSubmit, error }) => {
         <Button fluid size="large" color="teal">
           Login
         </Button>
+        <Divider horizontal>
+          Or
+        </Divider>
+        <SocialLogin  socialLogin={socialLogin}/>
       </Segment>
     </Form>
   );
