@@ -13,7 +13,8 @@ const actions = {
 
 const mapState = state => {
   return {
-    auth: state.firebase.auth //state registered in rootReducer as auth, now auth from firebase
+    auth: state.firebase.auth, //state registered in rootReducer as auth, now auth from firebase
+    profile: state.firebase.profile
   };
 };
 
@@ -29,7 +30,7 @@ class Navbar extends Component {
     this.props.history.push("/");
   };
   render() {
-    const { auth } = this.props;
+    const { auth, profile } = this.props;
     const authenticated = auth.isLoaded && !auth.isEmpty;
     return (
       <Menu inverted fixed="top">
@@ -58,7 +59,7 @@ class Navbar extends Component {
           {authenticated ? (
             <SignedInMenus
               signOut={this.handleSignOut}
-              auth={auth}
+              profile = {profile}
             />
           ) : (
             <SignedOutMenus

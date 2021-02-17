@@ -8,7 +8,7 @@ import SocialLogin from "../SocialLogin/SocialLogin";
 
 const actions = {login, socialLogin};
 
-const LoginForm = ({ login, handleSubmit, socialLogin, error }) => {
+const LoginForm = ({ login, handleSubmit, error , socialLogin}) => {
   return (
     <Form  size="large" onSubmit={handleSubmit(login)}>
       {/* must pass onSubbmit function to the handleSubmit(),

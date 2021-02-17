@@ -44,17 +44,27 @@ export const registerUser = user => {
   };
 };
 
-
-export const socialLogin = (selectedProvider)=>
-async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const socialLogin = selectedProvider => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  const firestore = getFirestore();
   const firebase = getFirebase();
-  try{
+  try {
     dispatch(closeModal());
-    await firebase.login({
-      provider:selectedProvider,
-      type:'popup'
-    })
-  }catch(error){
+    const user = await firebase.login({
+      provider: selectedProvider,
+      type: "popup"
+    });
+    if (user.additionalUserInfo.isNewUser) {
+      await firestore.set(`users/${user.user.uid}`, {
+        displayName: user.profile.displayName,
+        photoURL: user.profile.avatarUrl,
+        createAt: firestore.FieldValue.serverTimestamp()
+      });
+    }
+  } catch (error) {
     console.log(error);
   }
-}
+};

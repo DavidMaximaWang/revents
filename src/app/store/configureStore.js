@@ -9,7 +9,8 @@ import firebase from "../config/firebase";
 const rrfConfig = {
   userProfile: "users",
   attachAuthIsReady: true, //wait until authentication is ready for users
-  useFirestoreForProfile: true // use firestore instead of firebase for profile
+  useFirestoreForProfile: true, // use firestore instead of firebase for profile
+  updateProfileOnLogin:false
 }; //react redux firebase config, 
 
 export const configureStore = () => {
