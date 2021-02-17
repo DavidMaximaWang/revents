@@ -3,6 +3,10 @@ import { Form, Label } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+const getDate = (input)=>{
+  console.log(input.value);
+ return  input.value ? new Date(input.value) : null
+}
 const DateInput = ({
   input,
   width,
@@ -15,7 +19,7 @@ const DateInput = ({
       <DatePicker
         {...rest}
         placeholderText={placeholder}
-        selected={input.value ? new Date(input.value) : null}
+        selected={getDate(input)}
         onChange={input.onChange}
         onBlur={input.onBlur}
         onChangeRaw ={(e)=> e.preventDefault()}
