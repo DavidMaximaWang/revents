@@ -15,7 +15,7 @@ import {
   Icon
 } from "semantic-ui-react";
 import { Field, reduxForm } from "redux-form";
-import TextInput from "../../../../app/common/form/TextInput";
+import TextInput from "../../../app/common/form/TextInput";
 
 const validate = combineValidators({
   newPassword1: isRequired({ message: "Please enter a password" }),

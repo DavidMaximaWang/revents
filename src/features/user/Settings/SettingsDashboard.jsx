@@ -7,7 +7,7 @@ import BasicPage from "./BasicPage";
 import AboutPage from "./AboutPage";
 import PhotosPage from "./PhotosPage";
 import AccountPage from "./AccountPage";
-import { updatePassword } from "../../../auth/authAction";
+import { updatePassword } from "../../auth/authAction";
 
 const actions = {
   updatePassword
