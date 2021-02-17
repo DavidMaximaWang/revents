@@ -43,11 +43,11 @@ class BasicPage extends Component {
             name="dateOfBirth"
             component={DateInput}
             placeholder="Date of Birth"
-            // dateFormat="YYYY-MM-DD"
+            dateFormat="YYYY-MM-DD"
             showYearDropdown={true}
             showMonthDropdown={true}
             dropdownMode="select"
-            maxDate={moment().subtract(18, "years")}
+            // maxDate={moment().subtract(18, "years")}
           />
           {/* todo enable this field */}
           <Field
@@ -71,6 +71,8 @@ class BasicPage extends Component {
   }
 }
 
-export default reduxForm({ form: "userProfile", enableReinitialize: true })(
-  BasicPage
-);
+export default reduxForm({
+  form: "userProfile",
+  enableReinitialize: true,
+  destroyOnUnmount: false
+})(BasicPage);

@@ -3,12 +3,8 @@ import { Form, Label } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const getDate = (input)=>{
-  console.log(input.value);
- return  input.value ? new Date(input.value) : null
-}
 const DateInput = ({
-  input,
+  input: { value, onChange, onBlur },
   width,
   placeholder,
   meta: { touched, error },
@@ -19,10 +15,16 @@ const DateInput = ({
       <DatePicker
         {...rest}
         placeholderText={placeholder}
-        selected={getDate(input)}
-        onChange={input.onChange}
-        onBlur={input.onBlur}
-        onChangeRaw ={(e)=> e.preventDefault()}
+        selected={
+          value
+            ? Object.prototype.toString.call(value) !== "[object Date]"
+              ? value.toDate()
+              : value
+            : null
+        }
+        onChange={onChange}
+        onBlur={(e, val) => onBlur(val)}
+        onChangeRaw={e => e.preventDefault()}
       />
       {touched && error && (
         <Label basic color="red">
