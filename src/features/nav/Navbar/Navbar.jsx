@@ -58,6 +58,7 @@ class Navbar extends Component {
 
           {authenticated ? (
             <SignedInMenus
+              auth = {auth}
               signOut={this.handleSignOut}
               profile = {profile}
             />
