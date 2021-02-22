@@ -115,3 +115,58 @@ export const setMainPhoto = photo => async (
     throw new Error("failed to set main photo");
   }
 };
+
+
+export const joinEvent = event => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  const firebase = getFirebase();
+  const firestore = getFirestore();
+  const user = firebase.auth().currentUser;
+  const profile = getState().firebase.profile;
+  const attendee = {
+    displayName: profile.displayName,
+    going: true,
+    host: false,
+    joinDate: firestore.FieldValue.serverTimestamp(),
+    photoURL: profile.photoURL || "/assets/user.png"
+  };
+  try {
+    await firestore.update(`events/${event.id}`, {
+      [`attendees.${user.uid}`]: attendee
+    });
+    await firestore.set(`event_attendee/${event.id}_${user.uid}`, {
+      eventDate: event.date,
+      eventId: event.id,
+      host: false,
+      userUid: user.uid
+    });
+    toastr.success("Success", "Joined event");
+  } catch (error) {
+    console.error(error);
+    throw new Error("failed to join the event");
+  }
+};
+export const cancelJoinEvent = (event) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  const firebase = getFirebase();
+  const firestore = getFirestore();
+  const user = firebase.auth().currentUser;
+ 
+  try {
+    await firestore.update(`events/${event.id}`, {
+      [`attendees.${user.uid}`]: firestore.FieldValue.delete()
+    });//delete a field
+    await firestore.delete(`event_attendee/${event.id}_${user.uid}`);
+    //delete entire docoment
+    toastr.success("Success", "You will not go to this event");
+  } catch (error) {
+    console.error(error);
+    throw new Error('Oops', "failed to  cancel join the event");
+  }
+};

@@ -17,7 +17,7 @@ const eventImageTextStyle = {
     color: 'white'
 };
 
-const EventDetailedHeader = ({event, isGoing, isHost}) => {
+const EventDetailedHeader = ({event, isGoing, isHost, joinEvent, cancelJoinEvent}) => {
     //s_8.6.1
     return (
       <Segment.Group>
@@ -53,7 +53,7 @@ const EventDetailedHeader = ({event, isGoing, isHost}) => {
           {/* clearing then the float manage button is in correct place */}
           {!isHost && <Fragment>
             {isGoing ?
-              <Button>Cancel My Place</Button>:<Button color="teal">JOIN THIS EVENT</Button>}
+              <Button onClick={()=>cancelJoinEvent(event)} >Cancel My Place</Button>:<Button  onClick={()=>joinEvent(event)} color="teal">JOIN THIS EVENT</Button>}
               </Fragment>}
           {isHost && (
             <Fragment>
