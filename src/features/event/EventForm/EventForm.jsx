@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { Segment, Form, Button, Grid, Header } from "semantic-ui-react";
-import { createEvent, updateEvent } from "../eventActions";
+import { createEvent, updateEvent, cancelEventToggle } from "../eventActions";
 import TextInput from "../../../app/common/form/TextInput";
 import TextArea from "../../../app/common/form/TextArea";
 import SelectInput from "../../../app/common/form/SelectInput";
@@ -29,12 +29,13 @@ const mapState = (state, ownProps) => {
       state.firestore.ordered.events.filter(event => event.id === eventId)[0] ||
       {};
   }
-  return { initialValues: event };
+  return { initialValues: event, event };
 };
 
 const actions = {
   createEvent,
-  updateEvent
+  updateEvent,
+  cancelEventToggle
 };
 const validate = combineValidators({
   title: isRequired({ message: "The event title is required" }),
@@ -64,20 +65,20 @@ class EventForm extends Component {
     cityLatLng: {},
     venueLatLng: {}
   };
+
   async componentDidMount() {
     const { firestore, match, history } = this.props;
     let event = await firestore.get(`events/${match.params.id}`);
-    
+
     if (!event.exists) {
       history.push("/events");
       toastr.error("Sorry", "Event not found");
-    }else{
+    } else {
       this.setState({
         venueLatLng: event.data().venueLatLng
       });
     }
   }
-
 
   onFormSubmit = async values => {
     try {
@@ -90,7 +91,7 @@ class EventForm extends Component {
         this.props.history.push(`/events/${createdEvent.id}`);
       }
     } catch (error) {
-    console.log(error);
+      console.log(error);
     }
     // console.log(this.state);//ref is available as we are using 'Component'
   };
@@ -130,7 +131,9 @@ class EventForm extends Component {
       initialValues,
       invalid,
       submitting,
-      pristine
+      pristine,
+      event,
+      cancelEventToggle
     } = this.props;
     return (
       <Grid>
@@ -205,6 +208,14 @@ class EventForm extends Component {
                 {/*//todo  history.goBack can go to history of other website, may consider other option */}
                 Cancel
               </Button>
+
+              <Button
+                onClick={() => cancelEventToggle(event.id, !event.cancelled)}
+                type="button"
+                floated="right"
+                color={event.cancelled ? "green" : "red"}
+                content={event.cancelled ? "Reactive event" : "CancelEvent"}
+              ></Button>
             </Form>
           </Segment>
         </Grid.Column>
