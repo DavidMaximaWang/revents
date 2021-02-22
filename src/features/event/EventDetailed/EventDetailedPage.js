@@ -20,7 +20,7 @@ const mapState = (state, ownProps) => {
       state.firestore.ordered.events.filter(event => event.id === eventId)[0] ||
       {};
   }
-  return { event };
+  return { event, auth: state.firebase.auth};
 };
 //convert to component to use the react life cycle method;
 class EventDetailedPage extends Component {
@@ -35,13 +35,16 @@ class EventDetailedPage extends Component {
   }
 
   render() {
-    const { event } = this.props;
+    const { event , auth} = this.props;
     const attendees =
       event && event.attendees && objectToArray(event.attendees);
+      const isHost = event.hostUid === auth.uid;//current user is hosting this event?
+      const isGoing = attendees && attendees.some(a => a.id ===auth.uid);
+
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventDetailedHeader event={event} />
+          <EventDetailedHeader event={event} isGoing={isGoing} isHost = {isHost}/>
           <EventDetailedInfo event={event} />
           <EventDetailedChat />
         </Grid.Column>
