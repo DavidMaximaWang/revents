@@ -70,6 +70,11 @@ class EventForm extends Component {
      await firestore.setListener(`events/${match.params.id}`);
   }
 
+  async componentWillUnmount(){
+    const { firestore, match } = this.props;
+    await firestore.unsetListener(`events/${match.params.id}`);
+  }
+
   onFormSubmit = async values => {
     try {
       values.venueLatLng = this.state.venueLatLng;
