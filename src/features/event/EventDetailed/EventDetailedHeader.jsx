@@ -1,7 +1,7 @@
 import React from 'react'
 import { Segment, Image, Item, Header, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
-import {format, parseISO} from 'date-fns';
+import {format} from 'date-fns';
 
 //s_8.6.2 for style
 const eventImageStyle = {

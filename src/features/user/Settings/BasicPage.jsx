@@ -5,7 +5,6 @@ import DateInput from "../../../app/common/form/DateInput";
 import PlaceInput from "../../../app/common/form/PlaceInput";
 import TextInput from "../../../app/common/form/TextInput";
 import RadioInput from "../../../app/common/form/RadioInput";
-import moment from "moment";
 
 class BasicPage extends Component {
   render() {
