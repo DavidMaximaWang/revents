@@ -41,7 +41,8 @@ const EventDetailedHeader = ({event, isGoing, isHost, joinEvent, cancelJoinEvent
                     {event.date && format(event.date.toDate(), "EEEE do LLLL")}
                   </p>
                   <p>
-                    Hosted by <strong>{event.hostedBy}</strong>
+                    Hosted by <strong><Link  to ={`/profile/${event.hostUid}`} style ={{color: 'white'}}>{event.hostedBy}</Link>
+                    {event.hostedBy}</strong>
                   </p>
                 </Item.Content>
               </Item>
