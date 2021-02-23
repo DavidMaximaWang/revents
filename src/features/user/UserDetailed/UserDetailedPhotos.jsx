@@ -17,19 +17,17 @@ const UserDetailedPhotos = ({ photos }) => {
           />
         </Segment>
       </Grid.Column>
-      {photos && photos.length > 0 && (
-        <Grid.Column width={12}>
-          <Segment attached>
-            <Header icon="image" content="Photos" />
+      <Grid.Column width={12}>
+        <Segment attached>
+          <Header icon="image" content="Photos" />
 
-            <Image.Group size="small">
-              {photos.map((photo, index) => (
-                <Image key={index} src={photo.url} />
-              ))}
-            </Image.Group>
-          </Segment>
-        </Grid.Column>
-      )}
+          <Image.Group size="small">
+            {photos.map((photo, index) => (
+              <Image key={index} src={photo.url} />
+            ))}
+          </Image.Group>
+        </Segment>
+      </Grid.Column>
     </Fragment>
   );
 };

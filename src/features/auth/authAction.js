@@ -26,7 +26,6 @@ export const registerUser = user => {
       let createdUser = await firebase
         .auth()
         .createUserWithEmailAndPassword(user.email, user.password);
-      console.log(createdUser);
       await createdUser.user.updateProfile({
         displayName: user.displayName
       }); //update firestore profile not auth profile!!

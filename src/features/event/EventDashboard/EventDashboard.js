@@ -23,19 +23,7 @@ class EventDashboard extends Component {
     selectedEvent: null
   };
 
-  handleCreateFormOpen = () => {
-    this.setState({
-      selectedEvent: null,
-      isOpen: true
-    });
-  };
-  handleCreateFormCancel = () => {
-    this.setState({
-      isOpen: false
-    });
-  };
 
- 
   render() {
     const { events, loading } = this.props;
     if (loading) {
