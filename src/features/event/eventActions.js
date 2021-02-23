@@ -64,24 +64,50 @@ export const cancelEventToggle = (eventId, cancelled) => {
 };
 
 
-export const  getEventsForDashboard = ()=>
-async (dispatch, getState) => {
- let today = new Date();
- const firestore = firebase.firestore();//connect directly to firestore
- const eventsQuery= firestore.collection('events').where('date', '>=', today);
- try{
-   dispatch(asyncActionStart());
-  let querySnap = await eventsQuery.get();
-  let events = [];
-  for (let i = 0;i< querySnap.docs.length; i++){
-    let evt = {...querySnap.docs[i].data(), id:querySnap.docs[i].id}
-    // let evt = {...querySnap.docs[i].data()}
-    events.push(evt);
-  }
-  dispatch({type:FETCH_EVENTS, payload:{events}});
+export const getEventsForDashboard = lastEvent => async (
+  dispatch,
+  getState
+) => {
+  let today = new Date();
+  const firestore = firebase.firestore(); //connect directly to firestore
+  const eventsRef = firestore.collection("events");
+
+  try {
+    let query;
+    dispatch(asyncActionStart());
+    let startAfter =
+      lastEvent &&
+      (await eventsRef
+        .doc(lastEvent.id)
+        .get());
+    query = lastEvent
+      ? eventsRef
+          .where("date", ">=", today)
+          .orderBy("date")
+          .startAfter(startAfter)
+          .limit(2)
+      : eventsRef
+          .where("date", ">=", today)
+          .orderBy("date")
+          .limit(2);
+
+    let querySnap = await query.get();
+    if (!querySnap.docs.length) {
+      dispatch(asyncActionFinish());
+      return querySnap;
+    }
+
+    let events = [];
+    for (let i = 0; i < querySnap.docs.length; i++) {
+      let evt = { ...querySnap.docs[i].data(), id: querySnap.docs[i].id };
+      // let evt = {...querySnap.docs[i].data()}
+      events.push(evt);
+    }
+    dispatch({ type: FETCH_EVENTS, payload: { events } });
     dispatch(asyncActionFinish());
- }catch(error){
-   console.log(error);
-   dispatch(asyncActionError())
- }
-}
+    return querySnap;
+  } catch (error) {
+    console.log(error);
+    dispatch(asyncActionError());
+  }
+};
