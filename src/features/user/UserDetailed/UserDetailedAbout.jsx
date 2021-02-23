@@ -2,19 +2,6 @@ import React, { Fragment } from "react";
 import { format } from "date-fns";
 import { Grid, Segment, Header, List, Item, Icon } from "semantic-ui-react";
 
-const  getCreatedDate = profile => {
-    try {
-      const since =
-        profile.isLoaded &&
-        format(profile.createdAt.toDate(), "MM/dd/YYYY", {
-          awareOfUnicodeTokens: true
-        });
-      return since;
-    } catch (error) {
-      console.log(error);
-      return -1;
-    }
-  };
 const UserDetailedAbout = ({profile }) => {
   return (
     <Fragment>
@@ -30,8 +17,11 @@ const UserDetailedAbout = ({profile }) => {
                 Originally from <strong>{profile.origin}</strong>
               </p>
               <p>
-                Member Since:{" "}
-                <strong>{`${getCreatedDate(profile)}`}</strong>
+                Member Since: <strong>{profile.createdAt &&
+                  format(profile.createdAt.toDate(), "MM/dd/YYYY", {
+                    awareOfUnicodeTokens: true
+                  })}</strong>
+                
               </p>
               <p>Description of user</p>
             </Grid.Column>

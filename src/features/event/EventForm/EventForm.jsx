@@ -85,7 +85,7 @@ class EventForm extends Component {
         this.props.updateEvent(values);
         this.props.history.push(`/events/${this.props.initialValues.id}`);
       } else {
-        let createdEvent = this.props.createEvent(values);
+        let createdEvent = await this.props.createEvent(values);
         this.props.history.push(`/events/${createdEvent.id}`);
       }
     } catch (error) {

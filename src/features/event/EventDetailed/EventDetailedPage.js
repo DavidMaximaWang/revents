@@ -35,7 +35,7 @@ class EventDetailedPage extends Component {
     await firestore.setListener(`events/${match.params.id}`);
     
   }
-  async componentWillMount() {
+  async componentWillUnmount() {
     const { firestore, match } = this.props;
     await firestore.unsetListener(`events/${match.params.id}`);
   }

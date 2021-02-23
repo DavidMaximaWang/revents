@@ -9,7 +9,7 @@ export const userDetailedQuery = ({ auth, userUid }) => {
       {
         collection: "users",
         doc: userUid,
-        subcollectons: [{ collection: "photos" }],
+        subcollections: [{ collection: "photos" }],
         storeAs: "photos"
       }
     ];
@@ -24,3 +24,5 @@ export const userDetailedQuery = ({ auth, userUid }) => {
     ];
   }
 };
+
+//subcollections used to be subcollectons, caused the photos missing on refresh page

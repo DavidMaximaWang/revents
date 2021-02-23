@@ -18,12 +18,13 @@ class EventListItem extends Component {
                 <Item.Header as={Link} to={`/events/${event.id}`}>
                   {event.title}
                 </Item.Header>
-                <Item.Description as={Link} to={`/profile/${event.hostUid}`}>
+                <Item.Description >
                    Hosted by {' '} <Link to ={`/profile/${event.hostUid}`}>
                     {event.hostedBy}
                   </Link>
                   {' '}
                 </Item.Description>
+
                 {event.cancelled && (
                   <Label
                     style={{ tope: "-40px" }}

@@ -1,21 +1,11 @@
 import React, { Fragment } from "react";
 import { Grid, Segment, Item, Header } from "semantic-ui-react";
-import differenceInCalendarYears from "date-fns/differenceInCalendarYears";
+import { differenceInYears } from "date-fns/esm";
 
-const getAge = profile => {
-  if (!profile.isLoaded) return -1;
-  try {
-    const age = differenceInCalendarYears(
-      Date.now(),
-      profile.dateOfBirth.toDate()
-    );
-    return age;
-  } catch (error) {
-    console.log(error);
-    return "Unknown age";
-  }
-};
 const UserDetailedHeader = ({ profile }) => {
+  const age =
+    profile.dateOfBirth &&
+    differenceInYears(Date.now(), profile.dateOfBirth.toDate());
   return (
     <Fragment>
       <Grid.Column width={16}>
@@ -33,7 +23,7 @@ const UserDetailedHeader = ({ profile }) => {
                 <Header as="h3">Occupation</Header>
                 <br />
                 <Header as="h3">
-                  {getAge(profile)},{" "}
+                  {age|| "unknow"}{" age "}
                   {`Lives in ${profile.city || "unknown city"}`}
                 </Header>
               </Item.Content>
