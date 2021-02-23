@@ -13,7 +13,7 @@ class EventList extends Component {
             loadMore={getNextEvents}
             hasMore={!loading && moreEvents}
             initialLoad={false}
-          >
+          >s
             {events &&
               events.map(event => (
                 <EventListItem key={event.id} event={event} />
