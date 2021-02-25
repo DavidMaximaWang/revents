@@ -7,7 +7,7 @@ import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedSidebar from "./EventDetailedSidebar";
 import { withFirestore, firebaseConnect, isEmpty } from "react-redux-firebase";
 import {compose} from 'redux'
-import { objectToArray } from "../../../app/common/util/helpers";
+import { objectToArray, createDataTree } from "../../../app/common/util/helpers";
 import { joinEvent, cancelJoinEvent } from "../../user/userActions";
 import {addEventComment} from '../eventActions';
 
@@ -15,16 +15,19 @@ const mapState = (state, ownProps) => {
   //router properties are attached to the component as its own properties
   //any components own properties will be able to access by a second parameter
   const eventId = ownProps.match.params.id;
-  console.log(eventId);
   let event = {};
   if (state.firestore.ordered.events && state.firestore.ordered.events.length) {
     event =
       state.firestore.ordered.events.filter(event => event.id === eventId)[0] ||
       {};
   }
-  return { event, auth: state.firebase.auth,
-  eventChat: !isEmpty(state.firebase.data.event_chat)&& objectToArray(state.firebase.data.event_chat[ownProps.match.params.id])
-};
+  return {
+    event,
+    auth: state.firebase.auth,
+    eventChat:
+      !isEmpty(state.firebase.data.event_chat) &&
+      objectToArray(state.firebase.data.event_chat[ownProps.match.params.id])
+  };
 };
 
 const actions={
@@ -52,13 +55,14 @@ class EventDetailedPage extends Component {
       event && event.attendees && objectToArray(event.attendees);
       const isHost = event.hostUid === auth.uid;//current user is hosting this event?
       const isGoing = attendees && attendees.some(a => a.id ===auth.uid);
+      const chatTree = !isEmpty(eventChat) && createDataTree(eventChat);
 
     return (
       <Grid>
         <Grid.Column width={10}>
           <EventDetailedHeader event={event} isGoing={isGoing} isHost = {isHost} joinEvent= {joinEvent} cancelJoinEvent={cancelJoinEvent}/>
           <EventDetailedInfo event={event} />
-          <EventDetailedChat addEventComment={addEventComment} eventId={event.id} eventChat = {eventChat}/>
+          <EventDetailedChat addEventComment={addEventComment} eventId={event.id} eventChat = {chatTree}/>
         </Grid.Column>
         <Grid.Column width={6}>
           <EventDetailedSidebar attendees={attendees} />

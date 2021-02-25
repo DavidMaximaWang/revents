@@ -25,3 +25,20 @@ export const createNewEvent = (user, photoURL, event)=>{
     }
 }
 
+export const createDataTree = (dataSet)=>{
+    let hashTable = Object.create(null);
+
+    dataSet.forEach((data)=>{
+        hashTable[data.id]={...data, childNodes:[]}
+    })
+    let dataTree = [];
+    dataSet.forEach(data=>{
+        if(data.parentId){
+            hashTable[data.parentId].childNodes.push(hashTable[data.id]);
+        }
+        else
+        dataTree.push(hashTable[data.id])
+    })
+    return dataTree;
+}
+
