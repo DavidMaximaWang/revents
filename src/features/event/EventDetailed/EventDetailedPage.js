@@ -5,9 +5,11 @@ import EventDetailedHeader from "./EventDetailedHeader";
 import EventDetailedInfo from "./EventDetailedInfo";
 import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedSidebar from "./EventDetailedSidebar";
-import { withFirestore } from "react-redux-firebase";
+import { withFirestore, firebaseConnect, isEmpty } from "react-redux-firebase";
+import {compose} from 'redux'
 import { objectToArray } from "../../../app/common/util/helpers";
 import { joinEvent, cancelJoinEvent } from "../../user/userActions";
+import {addEventComment} from '../eventActions';
 
 const mapState = (state, ownProps) => {
   //router properties are attached to the component as its own properties
@@ -20,17 +22,21 @@ const mapState = (state, ownProps) => {
       state.firestore.ordered.events.filter(event => event.id === eventId)[0] ||
       {};
   }
-  return { event, auth: state.firebase.auth};
+  return { event, auth: state.firebase.auth,
+  eventChat: !isEmpty(state.firebase.data.event_chat)&& objectToArray(state.firebase.data.event_chat[ownProps.match.params.id])
+};
 };
 
 const actions={
 joinEvent,
-cancelJoinEvent
+cancelJoinEvent,
+addEventComment,
 }
 //convert to component to use the react life cycle method;
 class EventDetailedPage extends Component {
 
   async componentDidMount() {
+    
     const { firestore, match } = this.props;
     await firestore.setListener(`events/${match.params.id}`);
     
@@ -41,7 +47,7 @@ class EventDetailedPage extends Component {
   }
 
   render() {
-    const { event , auth, joinEvent, cancelJoinEvent} = this.props;
+    const { event , auth, joinEvent, cancelJoinEvent, addEventComment, eventChat} = this.props;
     const attendees =
       event && event.attendees && objectToArray(event.attendees);
       const isHost = event.hostUid === auth.uid;//current user is hosting this event?
@@ -52,7 +58,7 @@ class EventDetailedPage extends Component {
         <Grid.Column width={10}>
           <EventDetailedHeader event={event} isGoing={isGoing} isHost = {isHost} joinEvent= {joinEvent} cancelJoinEvent={cancelJoinEvent}/>
           <EventDetailedInfo event={event} />
-          <EventDetailedChat />
+          <EventDetailedChat addEventComment={addEventComment} eventId={event.id} eventChat = {eventChat}/>
         </Grid.Column>
         <Grid.Column width={6}>
           <EventDetailedSidebar attendees={attendees} />
@@ -62,4 +68,11 @@ class EventDetailedPage extends Component {
   }
 }
 
-export default withFirestore(connect(mapState, actions)(EventDetailedPage));
+export default compose(
+  withFirestore,
+  connect(
+    mapState,
+    actions
+  ),
+  firebaseConnect(props => [`event_chat/${props.match.params.id}`])
+)(EventDetailedPage);
