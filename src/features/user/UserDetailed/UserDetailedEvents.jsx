@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Grid, Segment, Header, Image, Card, Menu, Tab } from "semantic-ui-react";
+import { Grid, Segment, Header, Image, Card, Tab } from "semantic-ui-react";
 import { format } from 'date-fns';
 import { Link } from "react-router-dom";
 

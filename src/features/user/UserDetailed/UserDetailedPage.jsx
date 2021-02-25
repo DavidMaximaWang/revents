@@ -13,7 +13,6 @@ import { userDetailedQuery } from "../userQueries";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import UserDetailedSidebar from "./UserDetailedSidebar";
 import { getUserEvents } from "../userActions";
-import { stripTrailingSlash } from "history/PathUtils";
        
 const mapState = (state, ownProps) => {
   //ownProps to get params in url
