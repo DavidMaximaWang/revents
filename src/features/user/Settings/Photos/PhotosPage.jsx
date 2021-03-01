@@ -33,10 +33,11 @@ const actions = {
 const mapState = (state)=>({
   auth: state.firebase.auth,
   profile:  state.firebase.profile,
-  photos:  state.firestore.ordered.photos
+  photos:  state.firestore.ordered.photos,
+  loading: state.async.loading
 });
 
-const PhotosPage = ({ uploadProfileImage, photos, profile , deletePhoto,setMainPhoto}) => {
+const PhotosPage = ({ uploadProfileImage, photos, profile , deletePhoto,setMainPhoto, loading}) => {
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState(null);
 
@@ -127,7 +128,7 @@ const PhotosPage = ({ uploadProfileImage, photos, profile , deletePhoto,setMainP
       </Grid>
 
       <Divider />
-      <UserPhotos photos = {photos} profile={profile} deletePhoto={ handleDeletePhoto} setMainPhoto={handleSetMainPhoto}/>
+      <UserPhotos photos = {photos} profile={profile} deletePhoto={ handleDeletePhoto} setMainPhoto={handleSetMainPhoto} loading={loading}/>
     </Segment>
   );
 };
