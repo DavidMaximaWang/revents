@@ -28,7 +28,7 @@ const mapState = (state, ownProps) => {
       state.firestore.ordered.events.filter(event => event.id === eventId)[0] ||
       {};
   }
-  return { initialValues: event, event };
+  return { initialValues: event, event , loading: state.async.loading};
 };
 
 const actions = {
@@ -131,7 +131,8 @@ class EventForm extends Component {
       submitting,
       pristine,
       event,
-      cancelEventToggle
+      cancelEventToggle,
+      loading
     } = this.props;
     return (
       <Grid>
@@ -192,6 +193,7 @@ class EventForm extends Component {
                 disabled={invalid || submitting || pristine}
                 positive
                 type="submit"
+                loading= {loading}
               >
                 Submit
               </Button>
@@ -202,6 +204,7 @@ class EventForm extends Component {
                     : () => history.push("/events/")
                 }
                 type="button"
+                disabled={loading}
               >
                 {/*//todo  history.goBack can go to history of other website, may consider other option */}
                 Cancel
