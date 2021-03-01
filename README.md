@@ -1,3 +1,8 @@
+![chat](screens/chat.jpg)
+![event_detailed](screens/event_detailed.jpg)
+![event_list](screens/event_list.png)
+![eventDetailed](screens/eventDetailed.jpg)
+![userprofile](screens/userprofile.jpg)
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
