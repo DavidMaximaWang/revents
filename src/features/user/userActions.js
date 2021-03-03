@@ -148,33 +148,41 @@ export const setMainPhoto = photo => async (dispatch, getState) => {
 export const joinEvent = event => async (
   dispatch,
   getState,
-  { getFirebase, getFirestore }
+  
 ) => {
-  const firebase = getFirebase();
-  const firestore = getFirestore();
+  dispatch(asyncActionStart());
+  const firestore = firebase.firestore();
   const user = firebase.auth().currentUser;
   const profile = getState().firebase.profile;
   const attendee = {
     displayName: profile.displayName,
     going: true,
     host: false,
-    joinDate: firestore.FieldValue.serverTimestamp(),
+    joinDate: new Date(),
     photoURL: profile.photoURL || "/assets/user.png"
   };
   try {
-    await firestore.update(`events/${event.id}`, {
-      [`attendees.${user.uid}`]: attendee
+    let eventDocRef= firestore.collection('events').doc(event.id);
+    let eventAttendeeRef = firestore.collection('event_attendee').doc(`${event.id}_${user.uid}`);
+
+    await firestore.runTransaction(async transaction => {
+      await transaction.get(eventDocRef);
+      await transaction.update(eventDocRef, {
+        [`attendees.${user.uid}`]: attendee
+      });
+      await transaction.set(eventAttendeeRef, {
+        eventDate: event.date,
+        eventId: event.id,
+        host: false,
+        userUid: user.uid
+      });
     });
-    await firestore.set(`event_attendee/${event.id}_${user.uid}`, {
-      eventDate: event.date,
-      eventId: event.id,
-      host: false,
-      userUid: user.uid
-    });
+    dispatch(asyncActionFinish());
     toastr.success("Success", "Joined event");
   } catch (error) {
     console.error(error);
-    throw new Error("failed to join the event");
+    dispatch(asyncActionError());
+    toastr.success("Oops", "Problems signing up to event");
   }
 };
 export const cancelJoinEvent = event => async (

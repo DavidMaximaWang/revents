@@ -17,7 +17,7 @@ const eventImageTextStyle = {
     color: 'white'
 };
 
-const EventDetailedHeader = ({event, isGoing, isHost, joinEvent, cancelJoinEvent}) => {
+const EventDetailedHeader = ({loading, event, isGoing, isHost, joinEvent, cancelJoinEvent}) => {
     //s_8.6.1
     return (
       <Segment.Group>
@@ -41,8 +41,16 @@ const EventDetailedHeader = ({event, isGoing, isHost, joinEvent, cancelJoinEvent
                     {event.date && format(event.date.toDate(), "EEEE do LLLL")}
                   </p>
                   <p>
-                    Hosted by <strong><Link  to ={`/profile/${event.hostUid}`} style ={{color: 'white'}}>{event.hostedBy}</Link>
-                    {event.hostedBy}</strong>
+                    Hosted by{" "}
+                    <strong>
+                      <Link
+                        to={`/profile/${event.hostUid}`}
+                        style={{ color: "white" }}
+                      >
+                        {event.hostedBy}
+                      </Link>
+                      {event.hostedBy}
+                    </strong>
                   </p>
                 </Item.Content>
               </Item>
@@ -52,13 +60,25 @@ const EventDetailedHeader = ({event, isGoing, isHost, joinEvent, cancelJoinEvent
 
         <Segment attached="bottom" clearing>
           {/* clearing then the float manage button is in correct place */}
-          {!isHost && <Fragment>
-            {isGoing ?
-              <Button onClick={()=>cancelJoinEvent(event)} >Cancel My Place</Button>:<Button  onClick={()=>joinEvent(event)} color="teal">JOIN THIS EVENT</Button>}
-              </Fragment>}
+          {!isHost && (
+            <Fragment>
+              {isGoing ? (
+                <Button onClick={() => cancelJoinEvent(event)}>
+                  Cancel My Place
+                </Button>
+              ) : (
+                <Button
+                  loading={loading}
+                  onClick={() => joinEvent(event)}
+                  color="teal"
+                >
+                  JOIN THIS EVENT
+                </Button>
+              )}
+            </Fragment>
+          )}
           {isHost && (
             <Fragment>
-              
               <Button
                 as={Link}
                 to={`/manage/${event.id}`}
