@@ -43,6 +43,7 @@ class Navbar extends Component {
           <Menu.Item as={NavLink} exact to="/events" name="Events" />
           {authenticated && (
             <Fragment>
+              <Menu.Item as={NavLink} to="/people" name="People" />
               <Menu.Item as={NavLink} to="/createEvent">
                 <Button
                   floated="right"
@@ -51,9 +52,10 @@ class Navbar extends Component {
                   content="Create Event"
                 />
               </Menu.Item>
+              
             </Fragment>
           )}
-          <Menu.Item as={NavLink} to="/people" name="People" />
+          
           <Menu.Item as={NavLink} to="/test" name="Test" />
           {authenticated ? (
             <SignedInMenus

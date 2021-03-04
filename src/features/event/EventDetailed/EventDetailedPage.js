@@ -10,6 +10,7 @@ import {compose} from 'redux'
 import { objectToArray, createDataTree } from "../../../app/common/util/helpers";
 import { joinEvent, cancelJoinEvent } from "../../user/userActions";
 import {addEventComment} from '../eventActions';
+import {openModal} from '../../modals/modalActions';
 
 const mapState = (state, ownProps) => {
   //router properties are attached to the component as its own properties
@@ -35,6 +36,7 @@ const actions={
 joinEvent,
 cancelJoinEvent,
 addEventComment,
+openModal
 }
 //convert to component to use the react life cycle method;
 class EventDetailedPage extends Component {
@@ -51,30 +53,35 @@ class EventDetailedPage extends Component {
   }
 
   render() {
-    const {loading,  event , auth, joinEvent, cancelJoinEvent, addEventComment, eventChat} = this.props;
+    const {loading,  event , auth, joinEvent, cancelJoinEvent, addEventComment, eventChat, openModal} = this.props;
     const attendees =
       event && event.attendees && objectToArray(event.attendees);
-      const isHost = event.hostUid === auth.uid;//current user is hosting this event?
-      const isGoing = attendees && attendees.some(a => a.id ===auth.uid);
-      const chatTree = !isEmpty(eventChat) && createDataTree(eventChat);
+    const isHost = event.hostUid === auth.uid; //current user is hosting this event?
+    const isGoing = attendees && attendees.some(a => a.id === auth.uid);
+    const chatTree = !isEmpty(eventChat) && createDataTree(eventChat);
+    const authenticated = auth.isLoaded && !auth.isEmpty;
 
     return (
       <Grid>
         <Grid.Column width={10}>
           <EventDetailedHeader
             event={event}
-            loading= {loading}
+            loading={loading}
             isGoing={isGoing}
             isHost={isHost}
             joinEvent={joinEvent}
             cancelJoinEvent={cancelJoinEvent}
+            openModal= {openModal}
+            authenticated = {authenticated}
           />
           <EventDetailedInfo event={event} />
-          <EventDetailedChat
-            addEventComment={addEventComment}
-            eventId={event.id}
-            eventChat={chatTree}
-          />
+          {authenticated && (
+            <EventDetailedChat
+              addEventComment={addEventComment}
+              eventId={event.id}
+              eventChat={chatTree}
+            />
+          )}
         </Grid.Column>
         <Grid.Column width={6}>
           <EventDetailedSidebar attendees={attendees} />

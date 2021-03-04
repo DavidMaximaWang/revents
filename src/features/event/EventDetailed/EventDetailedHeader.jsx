@@ -17,7 +17,7 @@ const eventImageTextStyle = {
     color: 'white'
 };
 
-const EventDetailedHeader = ({loading, event, isGoing, isHost, joinEvent, cancelJoinEvent}) => {
+const EventDetailedHeader = ({loading, event, isGoing, isHost, joinEvent, cancelJoinEvent, authenticated, openModal}) => {
     //s_8.6.1
     return (
       <Segment.Group>
@@ -62,11 +62,12 @@ const EventDetailedHeader = ({loading, event, isGoing, isHost, joinEvent, cancel
           {/* clearing then the float manage button is in correct place */}
           {!isHost && (
             <Fragment>
-              {isGoing ? (
+              {isGoing && (
                 <Button onClick={() => cancelJoinEvent(event)}>
                   Cancel My Place
                 </Button>
-              ) : (
+              )}
+              {!isGoing && authenticated && (
                 <Button
                   loading={loading}
                   onClick={() => joinEvent(event)}
@@ -75,6 +76,16 @@ const EventDetailedHeader = ({loading, event, isGoing, isHost, joinEvent, cancel
                   JOIN THIS EVENT
                 </Button>
               )}
+              {
+                !authenticated &&<Button
+                  loading={loading}
+                  onClick={() => openModal('UnauthModal')}
+                  color="teal"
+                >
+                  JOIN THIS EVENT
+                </Button>
+              }
+               
             </Fragment>
           )}
           {isHost && (
