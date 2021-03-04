@@ -11,6 +11,7 @@ import { objectToArray, createDataTree } from "../../../app/common/util/helpers"
 import { joinEvent, cancelJoinEvent } from "../../user/userActions";
 import {addEventComment} from '../eventActions';
 import {openModal} from '../../modals/modalActions';
+import NotFound from "../../../app/layout/NotFound";
 
 const mapState = (state, ownProps) => {
   //router properties are attached to the component as its own properties
@@ -60,6 +61,8 @@ class EventDetailedPage extends Component {
     const isGoing = attendees && attendees.some(a => a.id === auth.uid);
     const chatTree = !isEmpty(eventChat) && createDataTree(eventChat);
     const authenticated = auth.isLoaded && !auth.isEmpty;
+
+    if(!Object.keys(event).length) return <NotFound></NotFound>;
 
     return (
       <Grid>
