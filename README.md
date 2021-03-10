@@ -1,3 +1,4 @@
+![deployed_event_detailed](screens/deployed.jpg)
 ![chat](screens/chat.jpg)
 ![event_detailed](screens/event_detailed.jpg)
 ![event_list](screens/event_list.png)
@@ -5,6 +6,7 @@
 ![userprofile](screens/userprofile.jpg)
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Deployed in  [https://revents-252811.firebaseapp.com](https://revents-252811.firebaseapp.com)
 ## Available Scripts
 
 In the project directory, you can run:
