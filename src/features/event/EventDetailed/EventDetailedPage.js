@@ -12,6 +12,7 @@ import { joinEvent, cancelJoinEvent } from "../../user/userActions";
 import {addEventComment} from '../eventActions';
 import {openModal} from '../../modals/modalActions';
 import NotFound from "../../../app/layout/NotFound";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 const mapState = (state, ownProps) => {
   //router properties are attached to the component as its own properties
@@ -26,6 +27,7 @@ const mapState = (state, ownProps) => {
   return {
     event,
     loading: state.async.loading,
+    requesting: state.firestore.status.requesting,
     auth: state.firebase.auth,
     eventChat:
       !isEmpty(state.firebase.data.event_chat) &&
@@ -54,13 +56,18 @@ class EventDetailedPage extends Component {
   }
 
   render() {
-    const {loading,  event , auth, joinEvent, cancelJoinEvent, addEventComment, eventChat, openModal} = this.props;
+    const {loading,  event , auth, joinEvent, cancelJoinEvent, addEventComment, eventChat, openModal, requesting, match} = this.props;
     const attendees =
-      event && event.attendees && objectToArray(event.attendees);
+      event && event.attendees && objectToArray(event.attendees).sort((a,b)=>{
+        return a.joinDate.toDate()- b.joinDate.toDate();
+      });
     const isHost = event.hostUid === auth.uid; //current user is hosting this event?
     const isGoing = attendees && attendees.some(a => a.id === auth.uid);
     const chatTree = !isEmpty(eventChat) && createDataTree(eventChat);
     const authenticated = auth.isLoaded && !auth.isEmpty;
+    const loadingEvent = requesting[`events/${match.params.id}`];
+
+    if(loadingEvent) return <LoadingComponent />
 
     if(!Object.keys(event).length) return <NotFound></NotFound>;
 

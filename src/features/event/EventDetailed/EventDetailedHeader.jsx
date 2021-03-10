@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Segment, Image, Item, Header, Button } from 'semantic-ui-react'
+import { Segment, Image, Item, Header, Button, Label } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import {format} from 'date-fns';
 
@@ -60,14 +60,15 @@ const EventDetailedHeader = ({loading, event, isGoing, isHost, joinEvent, cancel
 
         <Segment attached="bottom" clearing>
           {/* clearing then the float manage button is in correct place */}
+          {event.cancelled && <Label size ='large' color='red' content='This event has been cancelled'/>}
           {!isHost && (
             <Fragment>
-              {isGoing && (
+              {isGoing && !event.cancelled && (
                 <Button onClick={() => cancelJoinEvent(event)}>
                   Cancel My Place
                 </Button>
               )}
-              {!isGoing && authenticated && (
+              {!isGoing && authenticated && !event.cancelled && (
                 <Button
                   loading={loading}
                   onClick={() => joinEvent(event)}
@@ -77,7 +78,7 @@ const EventDetailedHeader = ({loading, event, isGoing, isHost, joinEvent, cancel
                 </Button>
               )}
               {
-                !authenticated &&<Button
+                !authenticated && !event.cancelled &&<Button
                   loading={loading}
                   onClick={() => openModal('UnauthModal')}
                   color="teal"
@@ -85,6 +86,7 @@ const EventDetailedHeader = ({loading, event, isGoing, isHost, joinEvent, cancel
                   JOIN THIS EVENT
                 </Button>
               }
+               
                
             </Fragment>
           )}

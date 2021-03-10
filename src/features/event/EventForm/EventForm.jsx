@@ -193,7 +193,7 @@ class EventForm extends Component {
                 disabled={invalid || submitting || pristine}
                 positive
                 type="submit"
-                loading= {loading}
+                loading={loading}
               >
                 Submit
               </Button>
@@ -210,13 +210,15 @@ class EventForm extends Component {
                 Cancel
               </Button>
 
-              <Button
-                onClick={() => cancelEventToggle(event.id, !event.cancelled)}
-                type="button"
-                floated="right"
-                color={event.cancelled ? "green" : "red"}
-                content={event.cancelled ? "Reactive event" : "CancelEvent"}
-              ></Button>
+              {event.id && (
+                <Button
+                  onClick={() => cancelEventToggle(event.id, !event.cancelled)}
+                  type="button"
+                  floated="right"
+                  color={event.cancelled ? "green" : "red"}
+                  content={event.cancelled ? "Reactive event" : "CancelEvent"}
+                ></Button>
+              )}
             </Form>
           </Segment>
         </Grid.Column>

@@ -8,7 +8,7 @@ import SocialLogin from "../SocialLogin/SocialLogin";
 
 const actions = {login, socialLogin};
 
-const LoginForm = ({ login, handleSubmit, error , socialLogin}) => {
+const LoginForm = ({ login, handleSubmit, error , socialLogin, submitting}) => {
   return (
     <Form  size="large" onSubmit={handleSubmit(login)}>
       {/* must pass onSubbmit function to the handleSubmit(),
@@ -28,7 +28,7 @@ const LoginForm = ({ login, handleSubmit, error , socialLogin}) => {
           placeholder="password"
         />
         {error && <Label basic color ='red'> {error}</Label>}
-        <Button fluid size="large" color="teal">
+        <Button loading={submitting} fluid size="large" color="teal">
           Login
         </Button>
         <Divider horizontal>

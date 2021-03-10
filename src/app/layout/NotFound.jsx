@@ -1,5 +1,6 @@
 import React from 'react';
 import { Segment, Button, Header, Icon } from 'semantic-ui-react';
+import { withRouter } from 'react-router';
 
 const NotFound = ({ history }) => {
   return (
@@ -17,4 +18,4 @@ const NotFound = ({ history }) => {
   );
 };
 
-export default NotFound;
+export default withRouter(NotFound);
